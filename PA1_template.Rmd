@@ -14,32 +14,29 @@ activity = read.csv("C:/Users/577037/Desktop/Activity Monitoring Data/activity.c
 ```
 
 ## What is mean total number of steps taken per day?
-##2. What is mean total number of steps taken per day
-
-##Total number of steps taken per day
 
 total_of_steps_per_day <- sum(activity$steps, na.rm = TRUE)
 total_of_steps_per_day
-## [1] 570608
+[1] 570608
 
-##Histogram of number of steps taken per day
+Histogram of number of steps taken per day
 
 total_steps_each_day <- aggregate(steps~date, data=activity, FUN=sum, na.rm=TRUE)
 hist(total_steps_each_day$steps)
 
 ## What is the average daily activity pattern?
 
-##Calculate mean and median of steps take per day
+Calculate mean and median of steps take per day
+
 total_steps_each_day_mean <- mean(total_steps_each_day$steps)
 total_steps_each_day_median <- median(total_steps_each_day$steps)
 
-##Average daily activity pattern
-##Plot of each 5 minute interval on steps taken per day
+Plot of each 5 minute interval on steps taken per day
 
 five_minutes_average <- aggregate(steps~interval, data=activity, FUN=mean, na.rm=TRUE)
 plot(x = five_minutes_average$interval, y = five_minutes_average$steps, type = "l") 
 
-##Maximum number of steps on 5-minute interval
+## Maximum number of steps on 5-minute interval
 
 max_steps <- max(five_minutes_average$steps)
 for (i in 1:288) 
@@ -48,10 +45,11 @@ for (i in 1:288)
         five_minute_interval_at_max_steps <- five_minutes_average$interval[i]
 }
 five_minute_interval_at_max_steps 
-## [1] 835
+[1] 835
 
 ## Inputing missing values
-##1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+
+Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
 total_na <- 0
 for (i in 1:17568)
@@ -60,11 +58,11 @@ for (i in 1:17568)
         total_na <- total_na+1 
 }
 total_na
-## [1] 2304
+[1] 2304
 
-##2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For ##example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+##2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. 
 
-##3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 
 activity_filled_in <- activity
@@ -82,13 +80,12 @@ for (i in 1:17568) # loop to find the na
     }
 }
 
-##4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of ##steps taken per day. 
+Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. 
 
 total_steps_each_day_filled_in <- aggregate(steps~date, data=activity_filled_in, FUN=sum, na.rm=TRUE)
 hist(total_steps_each_day_filled_in$steps)
 
-##Second part of 4.
-##Calculate the mean and median and explain the imoact of imputing missing data on the estimates of the total daily number of steps
+Calculate the mean and median and explain the imoact of imputing missing data on the estimates of the total daily number of steps
 
 total_steps_each_day_mean_filled_in <- mean(total_steps_each_day_filled_in$steps)
 total_steps_each_day_median_filled_in <- median(total_steps_each_day_filled_in$steps)
@@ -96,7 +93,7 @@ total_steps_each_day_median_filled_in <- median(total_steps_each_day_filled_in$s
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-### creating a char vector (week_day) 
+creating a char vector (week_day) 
 week <- wday(activity_filled_in$date)
 week_day <- week
 for (i in 1:17568) # loop to find the na
@@ -117,23 +114,16 @@ for (i in 1:17568) # loop to find the na
         week_day[i] <- 'weekend'
 }
 
-## Creating a new factor variable in the dataset "activity_filled_in" 
+Creating a new factor variable in the dataset "activity_filled_in" 
 activity_filled_in$weekday <-week_day
 
-## Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
-# finding the elements by "weekday" or "weekend"
+finding the elements by "weekday" or "weekend"
 weekday <- grep("weekday",activity_filled_in$weekday)
 weekday_frame <- activity_filled_in[weekday,]
 weekend_frame <- activity_filled_in[-weekday,]
 
-
-# What  is the average daily activity pattern?
-
-## Make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, 
-##    averaged across all days (yaxis)
-five_minutes_average_weekday <- aggregate(steps~interval, data=weekday_frame, FUN=mean, na.rm=TRUE)
-five_minutes_average_weekend <- aggregate(steps~interval, data=weekend_frame, FUN=mean, na.rm=TRUE)
 
 plot(x = five_minutes_average_weekday$interval, y = five_minutes_average_weekday$steps, type = "l") 
 
